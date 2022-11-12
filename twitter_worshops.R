@@ -1,0 +1,25 @@
+install.packages("rtweet")
+library(rtweet)
+library(tidyverse)
+
+auth_setup_default()
+
+followers <- get_followers("thehertieschool", n=Inf)
+following <- get_friends("thehertieschool", n=Inf)
+mentions <- get_mentions("thehertieschool", n=Inf)
+tweets <- search_tweets("data science and politics", n=Inf)
+tweets_2 <- search_tweets("data science", n=Inf)
+tweets_3 <- search_tweets("data science masters", n=Inf)
+tweets_berlin <- search_tweets("data science berlin", n=Inf)
+
+write_rds(followers, "followers_data.rds")
+write_rds(following, "following_data.rds")
+write_rds(tweets, "tweets_data.rds")
+write_rds(tweets_3, "tweets_3_data.rds")
+write_rds(tweets_berlin, "tweets_berlin_data.rds")
+write_rds(tweets_2, "tweets_2_data.rds")
+
+usernames_following <- lookup_users(following$to_id)
+write_rds(usernames_following, "usernames_following_data.rds")
+usernames_followers <- lookup_users(followers$from_id)
+write_rds(usernames_followers, "usernames_followers_data.rds")
