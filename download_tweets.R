@@ -43,13 +43,13 @@ beepr::beep()
 results5a <- purrr::map(usernames_following_data$screen_name[501:600],
                        ~purrr::safely(rtweet::get_timeline)())
 
-resultsba <- results5a |>
+results5 <- results5a |>
   purrr::map_df(
     .f = ~{.x |>
         purrr::pluck("result")}
   )
 
-readr::write_rds(resultsba, "data-raw/results_5.rds", compress = "xz")
+readr::write_rds(results5, "data-raw/results_5.rds", compress = "xz")
 
 beepr::beep()
 
@@ -68,9 +68,20 @@ beepr::beep(sound = 4)
 
 # bind rows ---------------------------------------------------------------
 
-fs::dir_info(path = "data-raw", regexp = "results") |>
+df_all_tweets <- fs::dir_info(path = "data-raw", regexp = "results") |>
   dplyr::pull(path) |>
   purrr::map_df(~{print(.x)
     readr::read_rds(.x)})
 
+readr::write_rds(df_all_tweets, "data-raw/all_tweets.rds", compress = "xz")
 
+# results1 <- readr::read_rds("data-raw/results.rds")
+# results2 <- readr::read_rds("data-raw/results_2.rds")
+# results3 <- readr::read_rds("data-raw/results_3.rds")
+# results4 <- readr::read_rds("data-raw/results_4.rds")
+# results5 <- readr::read_rds("data-raw/results_5.rds")
+# results6 <- readr::read_rds("data-raw/results_6.rds")
+# results7 <- readr::read_rds("data-raw/results_7.rds")
+#
+# janitor::compare_df_cols_same(results1, results2, results3, results4, results5,
+#                            results6, results7)
