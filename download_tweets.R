@@ -1,5 +1,5 @@
 
-usernames_following_data <- readRDS("usernames_following_data.rds")
+usernames_following_data <- readRDS("data-raw/usernames_following_data.rds")
 #
 # results1 <- rtweet::get_timeline(
 #   user = usernames_following_data$screen_name
