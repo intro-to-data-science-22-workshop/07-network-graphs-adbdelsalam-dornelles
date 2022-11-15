@@ -130,12 +130,15 @@ graph <- df_nodes |>
   dplyr::filter(weight > 1 ) |>
   as_tbl_graph()
 
-graph <- as_tbl_graph(df_nodes)
+graph <- as_tbl_graph(head(df_nodes, 100))
+
+
+
 set_graph_style(plot_margin = margin(1,1,1,1))
 
 # Not specifying the layout - defaults to "auto"
 
-ggraph(graph, graph, layout = 'linear', circular = TRUE) +
+ggraph(graph) +
   geom_edge_link() +
   geom_node_point()
 
@@ -158,3 +161,13 @@ ggraph(graph, graph, layout = 'linear', circular = TRUE) +
 # beepr::beep(4)
 #
 # user_dictionary <- academictwitteR::get_user_profile()
+
+user_dictionary <- users_dict |>
+  dplyr::pull(id) |>
+  academictwitteR::get_user_profile()
+
+user_dictionary <- tibble::as_tibble(test)
+user_dictionary |> names()
+
+user_dictionary$location
+readr::write_rds(user_dictionary, "data-raw/users_profile_data.rds")
