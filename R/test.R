@@ -116,12 +116,12 @@ df_edges <- all_interactions |>
   na.omit()
 
 # # subset for a while
-# df_edges <- df_edges |>
-#   head(1000)
+ df_edges <- df_edges |>
+   head(1000)
 #
-# nodes_main <- nodes_main |>
-#   dplyr::filter(username %in% c(unique(df_edges$from),
-#                                 unique(df_edges$to)))
+ nodes_main <- nodes_main |>
+   dplyr::filter(username %in% c(unique(df_edges$from),
+                                 unique(df_edges$to)))
 
 # verticies
 
