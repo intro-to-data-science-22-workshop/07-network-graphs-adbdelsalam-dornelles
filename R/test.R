@@ -109,13 +109,19 @@ all_interactions <- all_interactions |>
   dplyr::select(from, to = username)
 
 
-
-
 # vertices
 
 df_edges <- all_interactions |>
   dplyr::count(from, to, sort = TRUE, name = "weight") |>
   na.omit()
+
+# subset for a while
+df_edges <- df_edges |>
+  head(1000)
+
+nodes_main <- nodes_main |>
+  dplyr::filter(username %in% c(unique(df_edges$from),
+                                unique(df_edges$to)))
 
 # verticies
 
