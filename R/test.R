@@ -26,10 +26,6 @@ liked_hertie <- readr::read_rds("data-raw/liked_tweets.rds") |>
 rt_hertie <- readr::read_rds("data-raw/rt_tweeets.rds") |>
   tibble::as_tibble()
 
-# janitor::compare_df_cols_same(liked_hertie, rt_hertie, hertie_tweets)
-
-names(all_tweets)
-
 # get replies
 df_replies <- all_tweets |>
   dplyr::select(author_id, in_reply_to_user_id) |>
@@ -52,6 +48,8 @@ df_rt <- rt_hertie |>
     to = "252087644"
   )
 
+#TODO: anti_join with all tweets to avoid repetition
+
 # get likes
 df_likes <- liked_hertie |>
   dplyr::select(username, id) |>
@@ -65,6 +63,9 @@ users_dict <- dplyr::bind_rows(df_mentions, df_likes, df_rt) |>
   dplyr::select(id, username) |>
   unique() |>
   na.omit()
+
+users_dict$color <- "green"
+users_dict[users_dict$username == "thehertieschool",]$color <- "red"
 
 # merge all interactions
 
@@ -87,7 +88,6 @@ all_interactions <- dplyr::bind_rows(
   df_likes
 )
 
-
 # remove self interactions
 all_interactions <- all_interactions |>
   dplyr::filter(from != to)
@@ -102,10 +102,9 @@ all_interactions <- all_interactions |>
 
 # vertices
 
-
 df_nodes <- all_interactions |>
-  dplyr::count(from, to, sort = TRUE, name = "weight")
-
+  dplyr::count(from, to, sort = TRUE, name = "weight") |>
+  na.omit()
 
 # verticies
 
@@ -123,11 +122,20 @@ all_tweets |>
 library(ggraph)
 library(tidygraph)
 
+graph <- df_nodes |>
+  dplyr::filter(from == "thehertieschool" | to == "thehertieschool") |>
+  as_tbl_graph()
+
+graph <- df_nodes |>
+  dplyr::filter(weight > 1 ) |>
+  as_tbl_graph()
 
 graph <- as_tbl_graph(df_nodes)
+set_graph_style(plot_margin = margin(1,1,1,1))
 
 # Not specifying the layout - defaults to "auto"
-ggraph(graph) +
+
+ggraph(graph, graph, layout = 'linear', circular = TRUE) +
   geom_edge_link() +
   geom_node_point()
 
