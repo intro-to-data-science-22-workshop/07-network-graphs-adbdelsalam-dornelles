@@ -30,7 +30,7 @@ pop_username
 
 
 set.seed(123)
-graph_tweets <- graph_tweets %>%
+graph_tweets <- graph_tweets %>% select(-2:-4) |>
   activate(nodes) %>%
   mutate(community = group_louvain()) %>% # clustering
   activate(edges) %>%
@@ -61,3 +61,22 @@ important_person <-
   graph_tweets %>%
   activate(nodes) %>%
   important_user()
+
+set.seed(123)
+graph_tweets %>%
+  activate(nodes) %>%
+  mutate(ids = row_number(),
+         community = as.character(community)) %>%
+  filter(community %in% 1:3) %>% # number of community.
+  arrange(community,ids) %>%
+  mutate(node_label = ifelse(username %in% important_person, username,NA)) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(alpha = 0.3 ) +
+  geom_node_point(aes(size = degree, fill = community), shape = 21, alpha = 0.7, color = "grey30") +
+  geom_node_label(aes(label = node_label), repel = T, alpha = 0.8 ) +
+  guides(size = "none") +
+  labs(title = "Top 3 Community of #SecureTheTribe",
+       color = "Interaction",
+       fill = "Community") +
+  theme_void() +
+  theme(legend.position = "top")
