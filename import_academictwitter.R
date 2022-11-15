@@ -2,6 +2,8 @@
 hertie_following <- academictwitteR::get_user_id("thehertieschool") |>
   academictwitteR::get_user_following()
 
+readr::write_rds(hertie_following, "data-raw/hertie_following_users.rds")
+
 hertie_tweets <- academictwitteR::get_user_timeline(
   "252087644",
   start_tweets = "2022-08-01T00:00:00Z",
@@ -40,60 +42,3 @@ liked_tweets |> dplyr::count()
 beepr::beep(sound = 8)
 
 
-# apply blog post ---------------------------------------------------------
-
-count_and_group <- function (df) {
-
-  df |>
-    dplyr::select(in_reply_to_user_id) |>
-    unlist() |>
-    tibble::tibble(interacted_with = _) |>
-    tidyr::drop_na() |>
-    dplyr::group_by(interacted_with) |>
-    dplyr::summarise(weight = dplyr::n()) #|>
-    # dplyr::filter(
-    #   # ensures that only MP interactions are returned
-    #   interacted_with %in% substr(hertie_following_id, 2, nchar(hertie_following_id))
-    # )
-
-}
-
-create_edgelist <- function(df) {
-  df |>
-    dplyr::nest_by(author_id) |>
-    dplyr::summarise(count_and_group(data)) |>
-    # ignore interactions with self
-    dplyr::filter(author_id != interacted_with) |>
-    dplyr::rename(from = author_id, to = interacted_with)
-
-  }
-
-mp_edgelist <- create_edgelist(df)
-
-mp_edgelist |>
-  dplyr::arrange(-weight)
-
-library(tidygraph)
-library(ggraph)
-
-library(igraph)
-(mp_graph_undirected <- igraph::graph_from_data_frame(
-  dplyr::filter(mp_edgelist, weight > 1),
-  #vertices = mp_vertices,
-  directed = FALSE
-))
-
-ggraph(mp_graph_undirected, layout = "fr") +
-  geom_edge_link(color = "grey", alpha = 0.7) +
-  geom_node_point() +
-  theme_void()
-
-
-  scale_colour_manual(limits = party_colours$party,
-                      values = party_colours$colour, name = "Party")
-
-graph <- as_tbl_graph(mp_edgelist)
-
-ggraph(graph) +
-  geom_edge_link() +
-  geom_node_point()
