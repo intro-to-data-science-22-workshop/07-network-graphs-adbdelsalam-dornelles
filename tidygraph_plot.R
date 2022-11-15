@@ -49,7 +49,7 @@ important_user <- function(data) {
     pivot_longer(-username, names_to = "measures", values_to = "values") %>%
     group_by(measures) %>%
     arrange(desc(values)) %>%
-    slice(1:6) %>%
+    slice(1:50) %>%
     ungroup() %>%
     distinct(username) %>%
     pull(username)

@@ -115,13 +115,13 @@ df_edges <- all_interactions |>
   dplyr::count(from, to, sort = TRUE, name = "weight") |>
   na.omit()
 
-# subset for a while
-df_edges <- df_edges |>
-  head(1000)
-
-nodes_main <- nodes_main |>
-  dplyr::filter(username %in% c(unique(df_edges$from),
-                                unique(df_edges$to)))
+# # subset for a while
+# df_edges <- df_edges |>
+#   head(1000)
+#
+# nodes_main <- nodes_main |>
+#   dplyr::filter(username %in% c(unique(df_edges$from),
+#                                 unique(df_edges$to)))
 
 # verticies
 
@@ -134,11 +134,11 @@ all_tweets |>
   dplyr::filter(is.na(username))
 
 # subset for a while
-df_edges <- df_edges |>
-  head(1000)
-
-nodes_main <- nodes_main |>
-  dplyr::filter(username %in% c(unique(df_edges$from),
-                                unique(df_edges$to)))
-
-
+# df_edges <- df_edges |>
+#   head(1000)
+#
+# nodes_main <- nodes_main |>
+#   dplyr::filter(username %in% c(unique(df_edges$from),
+#                                 unique(df_edges$to)))
+#
+#
