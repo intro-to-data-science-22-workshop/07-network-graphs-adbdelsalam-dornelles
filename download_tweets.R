@@ -5,7 +5,7 @@ usernames_following_data <- readRDS("data-raw/usernames_following_data.rds")
 #   user = usernames_following_data$screen_name
 # )
 
-results <- usernames_following_data$screen_name[1:100] |>
+results <- usernames_following$screen_name[1:100] |>
   rtweet::get_timeline(verbose = TRUE)
 
 readr::write_rds(results, "data-raw/results.rds", compress = "xz")
