@@ -1,8 +1,8 @@
-install.packages("rtweet")
-library(rtweet)
-library(tidyverse)
-
-auth_setup_default()
+# install.packages("rtweet")
+# library(rtweet)
+# library(tidyverse)
+#
+# auth_setup_default()
 
 followers <- get_followers("thehertieschool", n=Inf)
 following <- get_friends("thehertieschool", n=Inf)
