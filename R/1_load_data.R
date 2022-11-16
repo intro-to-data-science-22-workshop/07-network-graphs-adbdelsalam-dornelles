@@ -8,7 +8,6 @@
 # Load the data -----------------------------------------------------------
 
 # Library {readr}, {tibble} and {dplyr}
-tictoc::tic()
 library(readr)  # open files such as .rds
 library(tibble) # better way to deal with data.frames-ish objects
 library(dplyr, warn.conflicts = FALSE)  # manipulate objects very efficiently
@@ -146,4 +145,3 @@ df_edges <- all_interactions |>
 all_tweets <- all_tweets |>
   dplyr::left_join(nodes_main, by = c("author_id" = "id"))
 
-tictoc::toc()
