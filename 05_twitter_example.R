@@ -1,4 +1,12 @@
-#a
+## Hertie School - Master of Data Science for Public Policy
+## Intro to Data Science Workshop 2022
+
+## Theme: Network analysis with {ggraph} and {tidygraph}
+## Instructors: Radwa Abdelsalam (github.com/Radwa-Radwan)
+##              Rodrigo Dornelles (github.com/rfdornelles)
+
+
+# Twitter example ---------------------------------------------------------
 library(tidygraph)
 library(ggraph)
 library(tidyverse)
@@ -6,7 +14,7 @@ library(tidyverse)
 
 graph_tweets <- tbl_graph(nodes = nodes_main,
                           edges = df_edges,
-                          directed = F)
+                          directed = FALSE)
 
 
 graph_tweets <- graph_tweets %>%
@@ -21,12 +29,13 @@ network_act_df <- graph_tweets %>%
   activate(nodes) %>% select(-2:-4)  %>%
   as_tibble()
 
-pop_username <- as_tibble(
+pop_username <- data.frame(
   network_act_df %>% arrange(-degree) %>% select(username),
   network_act_df %>% arrange(-between) %>% select(username),
   network_act_df %>% arrange(-closeness) %>% select(username),
   network_act_df %>% arrange(-eigen) %>% select(username)
-) %>% setNames(c("Degree","Betweenness","Closeness","Eigen"))
+) %>% setNames(c("Degree","Betweenness","Closeness","Eigen")) |>
+  tibble::as_tibble()
 
 pop_username
 
