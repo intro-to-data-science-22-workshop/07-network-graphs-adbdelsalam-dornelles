@@ -61,11 +61,7 @@ A study of 102 undergraduate students in a university college. The nodes represe
 
 ![](images/research_study_example.png)
 
-```{r cars, echo = TRUE}
-
-```
-
-```{r pressure}
+```{r echo=TRUE}
 
 ```
 
