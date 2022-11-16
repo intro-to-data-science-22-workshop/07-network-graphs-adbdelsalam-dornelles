@@ -76,11 +76,33 @@ df_likes <- liked_hertie |>
   ) |>
   dplyr::select(from = id, to)
 
-# Now, subsetting to have all data
-df_replies <- df_replies
 
-df_mentions <- df_mentions
-df_rt <- df_rt
+# Building the edges and nodes datasets -----------------------------------
+
+# Now that we have all the data that we would like to use in the right format
+# is easy to build the edges (users) and nodes (interactions) datasets.
+# Here, we used replies, RTs, likes, mentions, etc but of course you could use
+# more data or even less data, is totally up to you.
+
+# The main objective from now on is to merge two different datasets that'll
+# become our {tidygraph} main input.
+
+# Nodes:
+# Those are the users that somehow are part of our network analysis. They could
+# be mentioned, they liked, they RTed or are followed by @thehertieschool.
+# We're not worried not how relevant they are (it's a matter for the analysis).
+
+# To have them, we subset the user_profile dataset and select the identification
+# column, but also useful features to us, such as the name, its location, etc
+
+nodes_main <- users_profile |>
+  select(username, id, location, verified) |>
+  # make sure that there's no dupes
+  unique()
+
+
+# Edges: To build this we should merge all interactions dataset in one
+# (binding its rows)
 
 all_interactions <- dplyr::bind_rows(
   df_replies,
@@ -89,27 +111,30 @@ all_interactions <- dplyr::bind_rows(
   df_likes
 )
 
-# remove self interactions
+# Removing self-interactions
 all_interactions <- all_interactions |>
   dplyr::filter(from != to)
 
-nodes_main <- users_profile |>
-  select(username, id, location, verified) |>
-  unique()
+# Small adjusment: put the names in the ids:
+# We are working in the interactions dataset with the id's only. Although it's
+# perfectly possible, it'd bring always extra steps. So we'll change the ids for
+# they
 
-# bring names
 all_interactions <- all_interactions |>
   dplyr::left_join(nodes_main, by = c("from" = "id")) |>
   dplyr::select(from = username, to) |>
   dplyr::left_join(nodes_main, by = c("to" = "id")) |>
   dplyr::select(from, to = username)
 
-
-# vertices
-
+# Edge data frame, with all the weights
 df_edges <- all_interactions |>
+  # counting how many interactions each pair of to/from has
   dplyr::count(from, to, sort = TRUE, name = "weight") |>
   na.omit()
+
+# # merge with the usernames
+ all_tweets <- all_tweets |>
+   dplyr::left_join(nodes_main, by = c("author_id" = "id"))
 
 # # # subset for a while
 # df_edges <- df_edges |>
@@ -119,7 +144,5 @@ df_edges <- all_interactions |>
 #   dplyr::filter(username %in% c(unique(df_edges$from),
 #                                 unique(df_edges$to)))
 
-# merge with the usernames
-all_tweets <- all_tweets |>
-  dplyr::left_join(nodes_main, by = c("author_id" = "id"))
+
 
