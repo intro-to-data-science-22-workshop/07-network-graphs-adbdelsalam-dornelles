@@ -30,6 +30,8 @@
 library(tidygraph)
 library(ggraph)
 
+# Also, tidyverse to allows us use many data science useful tools
+library(tidyverse)
 # {tidygraph} -------------------------------------------------------------
 
 # This is a very comprehensive package that allows us to both organize and
@@ -78,7 +80,18 @@ class(dolphin_graph)
 
 # First, lets see which mode is active:
 active(dolphin_graph)
-# activate
+
+# Now we can change:
+dolphin_graph |>
+  activate(edges)
+
+dolphin_graph |>
+  activate(edges) |>
+  group_by(from, to) |>
+  summarise(
+    weight = n()
+  )
+
 
 # analysis
 
