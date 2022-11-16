@@ -8,6 +8,7 @@ graph_tweets <- tbl_graph(nodes = nodes_main,
                           edges = df_edges,
                           directed = F)
 
+
 graph_tweets <- graph_tweets %>%
   activate(nodes) %>%
   mutate(degree = centrality_degree(), # Degree centrality
@@ -21,10 +22,10 @@ network_act_df <- graph_tweets %>%
   as_tibble()
 
 pop_username <- as_tibble(
-  network_act_df %>% arrange(-degree) %>% select(username) %>% head(),
-  network_act_df %>% arrange(-between) %>% select(username) %>% head(),
-  network_act_df %>% arrange(-closeness) %>% select(username) %>% head(),
-  network_act_df %>% arrange(-eigen) %>% select(username) %>% head()
+  network_act_df %>% arrange(-degree) %>% select(username),
+  network_act_df %>% arrange(-between) %>% select(username),
+  network_act_df %>% arrange(-closeness) %>% select(username),
+  network_act_df %>% arrange(-eigen) %>% select(username)
 ) %>% setNames(c("Degree","Betweenness","Closeness","Eigen"))
 
 pop_username
@@ -37,10 +38,12 @@ graph_tweets <- graph_tweets %>% select(-2:-4) |>
   activate(edges) %>%
   filter(!edge_is_loop())
 
+
 graph_tweets %>%
   activate(nodes) %>%
   as.data.frame() %>%
   count(community)
+
 
 important_user <- function(data) {
   name_person <- data %>%
@@ -49,30 +52,33 @@ important_user <- function(data) {
     select(-community) %>%
     pivot_longer(-username, names_to = "measures", values_to = "values") %>%
     group_by(measures) %>%
-    arrange(desc(values)) %>%
-    slice(1:50) %>%
-    ungroup() %>%
-    distinct(username) %>%
-    pull(username)
+    arrange(desc(values))
 
   return(name_person)
 }
 
+
 important_person <-
   graph_tweets %>%
   activate(nodes) %>%
-  important_user()
+  important_user() %>%
+  slice(1:10) %>%
+  ungroup() %>%
+  distinct(username) %>%
+  pull(username)
+
 
 set.seed(123)
+
 graph_tweets %>%
   activate(nodes) %>%
   mutate(ids = row_number(),
          community = as.character(community)) %>%
-  filter(community %in% 1:3) %>% # number of community.
+  filter(community %in% 1:7) %>% # number of community.
   arrange(community,ids) %>%
   mutate(node_label = ifelse(username %in% important_person, username,NA)) %>%
   ggraph(layout = "fr") +
-  geom_edge_link(alpha = 0.3 ) +
+  geom_edge_link(alpha = 0.3) +
   geom_node_point(aes(size = degree, fill = community), shape = 21, alpha = 0.7, color = "grey30") +
   geom_node_label(aes(label = node_label), repel = T, alpha = 0.8 ) +
   guides(size = "none") +
@@ -81,3 +87,7 @@ graph_tweets %>%
        fill = "Community") +
   theme_void() +
   theme(legend.position = "top")
+
+
+
+
