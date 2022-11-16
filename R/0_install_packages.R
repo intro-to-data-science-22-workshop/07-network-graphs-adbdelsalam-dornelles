@@ -2,7 +2,7 @@
 ## Intro to Data Science Workshop 2022
 
 ## Theme: Network analysis with {ggraph} and {tidygraph}
-## Instructors: Radwa Adbdelsalam (github.com/Radwa-Radwan)
+## Instructors: Radwa Abdelsalam (github.com/Radwa-Radwan)
 ##              Rodrigo Dornelles (github.com/rfdornelles)
 
 
