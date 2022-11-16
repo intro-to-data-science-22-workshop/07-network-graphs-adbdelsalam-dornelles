@@ -79,7 +79,7 @@ important_person <-
 
 set.seed(123)
 
-graph_tweets %>%
+hertie_graph <- graph_tweets %>%
   activate(nodes) %>%
   mutate(ids = row_number(),
          community = as.character(community)) %>%
@@ -91,7 +91,7 @@ graph_tweets %>%
   geom_node_point(aes(size = degree, fill = community), shape = 21, alpha = 0.7, color = "grey30") +
   geom_node_label(aes(label = node_label), repel = T, alpha = 0.8 ) +
   guides(size = "none") +
-  labs(title = "Top 3 Community of #SecureTheTribe",
+  labs(title = "Top Communities in the #HertieVerse",
        color = "Interaction",
        fill = "Community") +
   theme_void() +
