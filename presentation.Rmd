@@ -25,9 +25,8 @@ Unweighted and Undirected Graph
 
 Tom, Cherelle and Melanie live in the same house. They are connected but no direction and no weight
 
-[![bla bla bla](images/undirected_unweighted.png)](hyperlynk.to.somewhere)
+[![https://github.com/holtzy/Google-Scholar-Network](images/undirected_unweighted.png)](https://github.com/holtzy/Google-Scholar-Network)
 
-<https://github.com/holtzy/Google-Scholar-Network> --------------------!!!!!!!
 
 ## Graph Theory
 
@@ -35,7 +34,7 @@ Undirected But Weighted
 
 Co-authors are connected if they published a scientific paper together. The weight is the number of time it happened.
 
-![](images/undirected_weighted.png)
+[![https://github.com/holtzy/Google-Scholar-Network](images/undirected_weighted.png)](https://github.com/holtzy/Google-Scholar-Network)
 
 ## Graph Theory
 
@@ -43,7 +42,7 @@ Directed But Unweighted
 
 Tom follows Shirley on twitter, but the opposite is not necessarily true. The connection is unweighted, just connected or not.
 
-![](images/directed_unweighted.png)
+[![https://github.com/holtzy/Google-Scholar-Network](images/directed_unweighted.png)](https://github.com/holtzy/Google-Scholar-Network)
 
 ## Graph Theory
 
@@ -51,15 +50,81 @@ Directed and Weighted
 
 People migrate from a country to another: the weight is the number of people, the direction is the destination.
 
-![](images/directed_weighted.png)
+[![https://github.com/holtzy/Google-Scholar-Network](images/directed_weighted.png)](https://github.com/holtzy/Google-Scholar-Network)
+
 
 ## Graph Theory Algorithm
+
+![](images/research_study_example.png)
 
 ## Research study example
 
 A study of 102 undergraduate students in a university college. The nodes represent participants and the links between them are friendships. The size of each node reflects the strength of alcohol usage. A typical network-based research question would be whether alcohol usage is associated with friendship among these students. (Robins, 2013)
 
 ![](images/research_study_example.png)
+
+## Libraries
+
+Tidygraph
+Ggraph
+Tidyverse
+
+
+
+linking nodes and to the "agents" and "relations" wrangled data sets 
+
+## Nodes
+
+Estimating the positionality of the nodes in terms of centrality to pinpoint the important nodes
+
+tidygraph currently has 11 different centrality measures 
+
+degree = centrality_degree(), # Degree centrality
+         between = centrality_betweenness(normalized = T), # Betweeness centrality
+         closeness = centrality_closeness(), # Closeness centrality
+         eigen = centrality_eigen() # Eigen centrality
+         
+pop_username <- as_tibble(
+  network_act_df %>% arrange(-degree) %>% select(username),
+  network_act_df %>% arrange(-between) %>% select(username),
+  network_act_df %>% arrange(-closeness) %>% select(username),
+  network_act_df %>% arrange(-eigen) %>% select(username)
+) %>% setNames(c("Degree","Betweenness","Closeness","Eigen"))
+
+pop_username
+
+
+## Clustering
+
+set.seed(123)
+graph_tweets <- graph_tweets %>% select(-2:-4) |>
+  activate(nodes) %>%
+  mutate(community = group_louvain()) %>% # clustering
+  activate(edges) %>%
+  filter(!edge_is_loop())
+
+
+## Ggraph Plot
+
+set.seed(123)
+
+graph_tweets %>%
+  activate(nodes) %>%
+  mutate(ids = row_number(),
+         community = as.character(community)) %>%
+  filter(community %in% 1:7) %>% # number of community.
+  arrange(community,ids) %>%
+  mutate(node_label = ifelse(username %in% important_person, username,NA)) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(alpha = 0.3) +
+  geom_node_point(aes(size = degree, fill = community), shape = 21, alpha = 0.7, color = "grey30") +
+  geom_node_label(aes(label = node_label), repel = T, alpha = 0.8 ) +
+  guides(size = "none") +
+  labs(title = "Top 3 Community of #SecureTheTribe",
+       color = "Interaction",
+       fill = "Community") +
+  theme_void() +
+  theme(legend.position = "top")
 
 ```{r echo=TRUE}
 
