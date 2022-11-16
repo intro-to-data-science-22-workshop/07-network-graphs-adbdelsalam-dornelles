@@ -1,40 +1,94 @@
 ---
-title: "Untitled"
+title: "Network Graphs TidyGraph & GGraph"
 author: "Radwa & Rodrigo"
 date: "`r Sys.Date()`"
-output: ioslides_presentation
+output: 
+  powerpoint_presentation:
+    reference_doc: Network_graphs.pptx
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+## Network Graph 
 
-## Slide with Bullets
+ ![](images/network_graph.png)
 
--   Bullet 1
--   Bullet 2
--   Bullet 3
 
-## Slide with R Output
+## Social network analysis
+
+  “Health behaviors spread across social systems, crime is conducted through illicit networks, and community movements are prompted by social media. Social connections are crucial to each of these phenomena.” (Robins, 2013)
+
+## Graph Theory
+
+
+  Unweighted and Undirected Graph
+
+  Tom, Cherelle and Melanie live in the same house. They are connected but no direction and no weight
+
+ ![](images/undirected_unweighted.png)
+ https://github.com/holtzy/Google-Scholar-Network --------------------!!!!!!!
+ 
+
+
+## Graph Theory
+
+Undirected But Weighted
+
+Co-authors are connected if they published a scientific paper together. The weight is the number of time it happened.
+
+
+![](images/undirected_weighted.png)
+
+## Graph Theory
+
+Directed But Unweighted
+
+Tom follows Shirley on twitter, but the opposite is not necessarily true. The connection is unweighted, just connected or not.
+
+
+![](images/directed_unweighted.png)
+
+## Graph Theory
+
+Directed and Weighted
+
+People migrate from a country to another: the weight is the number of people, the direction is the destination.
+
+
+![](images/directed_weighted.png)
+
+## Graph Theory Algorithm
+
+
+
+
+## Research study example
+
+A study of 102 undergraduate students in a university college. The nodes represent participants and the links between them are friendships. The size of each node reflects the strength of alcohol usage. A typical network-based research question would be whether alcohol usage is associated with friendship among these students. (Robins, 2013)
+
+
+![](images/research_study_example.png)
+
+
 
 ```{r cars, echo = TRUE}
-summary(cars)
+
 ```
 
-## Slide with Plot
+
 
 ```{r pressure}
-plot(pressure)
+
 ```
 
-## New slide
+## References
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Robins, G. (2013). A tutorial on methods for the modeling and analysis of social network data. Journal of Mathematical Psychology, 57(6), 261-274.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.![](https://hertieschool-f4e6.kxcdn.com/fileadmin/_processed_/c/f/csm_daria-nepriakhina-gGoi4QTXXBA-unsplash__1__9e4ee31771.jpg)
+https://github.com/holtzy/Google-Scholar-Network
+
+
