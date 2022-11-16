@@ -11,35 +11,29 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+## Network Graph
 
-
-## Network Graph 
-
- ![](images/network_graph.png)
-
+![](images/network_graph.png)
 
 ## Social network analysis
 
-  “Health behaviors spread across social systems, crime is conducted through illicit networks, and community movements are prompted by social media. Social connections are crucial to each of these phenomena.” (Robins, 2013)
+"Health behaviors spread across social systems, crime is conducted through illicit networks, and community movements are prompted by social media. Social connections are crucial to each of these phenomena." (Robins, 2013)
 
 ## Graph Theory
 
+Unweighted and Undirected Graph
 
-  Unweighted and Undirected Graph
+Tom, Cherelle and Melanie live in the same house. They are connected but no direction and no weight
 
-  Tom, Cherelle and Melanie live in the same house. They are connected but no direction and no weight
+[![bla bla bla](images/undirected_unweighted.png)](hyperlynk.to.somewhere)
 
- ![](images/undirected_unweighted.png)
- https://github.com/holtzy/Google-Scholar-Network --------------------!!!!!!!
- 
-
+<https://github.com/holtzy/Google-Scholar-Network> --------------------!!!!!!!
 
 ## Graph Theory
 
 Undirected But Weighted
 
 Co-authors are connected if they published a scientific paper together. The weight is the number of time it happened.
-
 
 ![](images/undirected_weighted.png)
 
@@ -49,7 +43,6 @@ Directed But Unweighted
 
 Tom follows Shirley on twitter, but the opposite is not necessarily true. The connection is unweighted, just connected or not.
 
-
 ![](images/directed_unweighted.png)
 
 ## Graph Theory
@@ -58,28 +51,19 @@ Directed and Weighted
 
 People migrate from a country to another: the weight is the number of people, the direction is the destination.
 
-
 ![](images/directed_weighted.png)
 
 ## Graph Theory Algorithm
-
-
-
 
 ## Research study example
 
 A study of 102 undergraduate students in a university college. The nodes represent participants and the links between them are friendships. The size of each node reflects the strength of alcohol usage. A typical network-based research question would be whether alcohol usage is associated with friendship among these students. (Robins, 2013)
 
-
 ![](images/research_study_example.png)
-
-
 
 ```{r cars, echo = TRUE}
 
 ```
-
-
 
 ```{r pressure}
 
@@ -89,6 +73,4 @@ A study of 102 undergraduate students in a university college. The nodes represe
 
 Robins, G. (2013). A tutorial on methods for the modeling and analysis of social network data. Journal of Mathematical Psychology, 57(6), 261-274.
 
-https://github.com/holtzy/Google-Scholar-Network
-
-
+<https://github.com/holtzy/Google-Scholar-Network>
