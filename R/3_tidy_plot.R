@@ -60,6 +60,8 @@ class(example_graph)
 dolhpin_edges <- readr::read_csv(file = "data-raw/dolphin_edges.csv")
 dolphin_nodes <- readr::read_csv(file = "data-raw/dolphin_nodes.csv")
 
+dolphin_nodes
+
 # Let's take a quick look:
 dolphin_nodes
 
@@ -75,32 +77,140 @@ dolphin_graph
 
 class(dolphin_graph)
 
-# It allow us to manipulate both nodes and edges at the same time using
-# other {dplyr} verbs. The key to to this is the function called activate()
+# Although the package offers some functions to manipulate the date, probably
+# it's more useful to do this operations before creating the tbl_graph object,
+# using {dplyr} and {tidyr} that are well-known.
 
-# First, lets see which mode is active:
-active(dolphin_graph)
-
-# Now we can change:
-dolphin_graph |>
-  activate(edges)
-
-dolphin_graph |>
-  activate(edges) |>
-  group_by(from, to) |>
-  summarise(
-    weight = n()
-  )
+# The function activate() might be useful in many cases.
 
 
-# analysis
+# Another useful feature allow us to analyse the data and uses centrality
+# measures, clustering and other cool tools:
+
+# A short explanation of each measure is at: <https://rpubs.com/TeraPutera/social_network_analysis>:
+
+# Degree: For finding very connected individuals, popular individuals,
+# individuals who are likely to hold most information or individuals who can
+# quickly connect with the wider network.
+
+# Betweenness: For finding the individuals who influence the flow around a
+# system.
+
+# Closeness: For finding the individuals who are best placed to influence the
+# entire network most quickly.
+
+# Eigen: measures a node’s influence based on the number of links it has to
+# other nodes in the network, then goes a step further by also taking into
+# account how well connected a node is, and how many links their connections
+# have, and so on through the network.
+
+# We should call the centrality_(*) family in the context of the tbl_graph:
+
+dolphin_measures <- dolphin_graph |>
+  mutate(degree = centrality_degree(), # Degree centrality
+         between = centrality_betweenness(normalized = T), # Betweeness centrality
+         closeness = centrality_closeness(), # Closeness centrality
+         eigen = centrality_eigen() # Eigen centrality
+  ) |>
+  # tell that we want to work with the nodes part
+  activate(nodes) |>
+  # "export" as a tibble
+  as_tibble()
+
+# Order according to some criteria:
+dolphin_measures |>
+  arrange(-eigen)
+
+dolphin_measures |>
+  arrange(-degree)
+
+# Also, it's possible to identify communities, groups, clusters. The family
+# that helps us in this task is the group_(*):
+
+dolphin_clust <- dolphin_graph |>
+  mutate(
+    community = group_infomap()
+  ) |>
+  activate(nodes) |>
+  as_tibble()
+
+dolphin_clust |>
+  count(community)
 
 # {ggraph} ----------------------------------------------------------------
 
-#
+# Now we can easily put all together and make some cool plots!
+# ggraph works with ggplot2 to plot edges and nodes and use all ggplopt's
+# resources to create useful visualizations.
+
+# Just to warm up, we can create some random data and see how it behaves.
+# the create_(*) family allows us to do so:
 create_ring(5) |>
   ggraph() +
   geom_edge_link() +
   geom_node_point()
 
+create_complete(10) |>
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point()
+
+create_tree(n = 30, children = 2) |>
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point()
+
+# But the most useful, of course, is to use with the data that we already
+# prepared.
+
+# Basically, we call the data and the main function ggraph()
+
+dolphin_graph |>
+  ggraph()
+
+# Then, as we do with ggplot2, we add the elements with +
+
+dolphin_graph |>
+  ggraph() +
+  geom_node_point()
+
+# And, of course, we can add edges:
+
+dolphin_graph |>
+  ggraph() +
+  geom_node_point() +
+  geom_edge_link()
+
+
+# Using the ggplot() power, we can make more useful the {tidygraph} features:
+
+# It has some themes:
+dolphin_graph |>
+  ggraph() +
+  geom_node_point() +
+  geom_edge_link() +
+  theme_graph()
+
+# Centrality measures
+
+dolphin_graph |>
+  mutate(
+    centrality = centrality_degree() # Degree centrality
+  ) |>
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(size = centrality, color = centrality)) +
+  theme_graph()
+
+# Clustering
+
+dolphin_graph |>
+  mutate(
+    community = as.factor(group_infomap())
+  ) |>
+  ggraph() +
+  geom_edge_link() +
+  geom_node_point(aes(color = community), size = 5) +
+  #scale_color_viridis(discrete = TRUE) +
+  theme_graph()
 
