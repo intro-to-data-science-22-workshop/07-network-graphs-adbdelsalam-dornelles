@@ -132,17 +132,5 @@ df_edges <- all_interactions |>
   dplyr::count(from, to, sort = TRUE, name = "weight") |>
   na.omit()
 
-# # merge with the usernames
- all_tweets <- all_tweets |>
-   dplyr::left_join(nodes_main, by = c("author_id" = "id"))
-
-# # # subset for a while
-# df_edges <- df_edges |>
-#   head(1000)
-# #
-# nodes_main <- nodes_main |>
-#   dplyr::filter(username %in% c(unique(df_edges$from),
-#                                 unique(df_edges$to)))
-
-
+# Tada! Now we have our date ready to be used with the packages!
 
