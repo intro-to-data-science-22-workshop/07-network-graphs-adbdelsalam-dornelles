@@ -41,4 +41,12 @@ liked_tweets |> dplyr::count()
 
 beepr::beep(sound = 8)
 
+user_dictionary <- users_dict |>
+  dplyr::pull(id) |>
+  academictwitteR::get_user_profile()
 
+user_dictionary <- tibble::as_tibble(test)
+user_dictionary |> names()
+
+user_dictionary$location
+readr::write_rds(user_dictionary, "data-raw/users_profile_data.rds")
