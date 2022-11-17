@@ -1,64 +1,77 @@
-#Load required libraries
+## Hertie School - Master of Data Science for Public Policy
+## Intro to Data Science Workshop 2022
+
+## Theme: Network analysis with {ggraph} and {tidygraph}
+## Instructors: Radwa Abdelsalam (github.com/Radwa-Radwan)
+##              Rodrigo Dornelles (github.com/rfdornelles)
 
 
-# create final edgelist
-mp_edgelist <- create_edgelist(results)
+# Practice Materials ------------------------------------------------------
 
-# create vertex dataframe
-mp_vertices <- results %>%
-  select(screen_name, profile_image_url, followers_count) %>%
-  distinct() |>
-  left_join(
-    mp_list |>
-      dplyr::mutate(
-        screen_name = substr(Screen.name, 2, nchar(Screen.name))
-      ) |>
-      dplyr::select(
-        screen_name,
-        constituency = Constituency,
-        party = Party,
-        name = Name
-      )
-  )
-
-#create a unique colour for each party. Hint: use unique() function
-
-parties <- mp_vertices$party |> unique()
-party_colours <- c("#000000", "#216a4d", "#008a49",
-                   "#d3c200", "#3d8028", "#f5b52e",
-                   "#dd0339", "#cccccc", "#66ab21",
-                   "#c2282a", "#018fda", "#eec52e")
-
-#transform the color set into a dataframe and bind it to the main dataframe using left_join()
-
-color_df <- data.frame(
-  party = parties,
-  colour = party_colours
-)
-
-mp_vertices <- mp_vertices |>
-  left_join(color_df)
-
-#create a final edge list
-
-mp_edgelist <- mp_edgelist |>
-  dplyr::filter(to %in% mp_vertices$screen_name)
+#Loading required libraries
+library(ggraph)
+library(tidygraph)
+library(tidyverse)
 
 
-#set the nodes and the edges
+# 1) First graphs ---------------------------------------------------------
 
-mp_graph <- tbl_graph(nodes = mp_vertices,
-                          edges = mp_edgelist,
-                          directed = F)
-
-
-#activate the nodes/vertices and edges. Create communities
-
-mp_vertex_list <- mp_vertices %>%
-  activate(nodes) %>%
-  as_tibble()
+# Using the create_(*) family, build at least 2 different graphs and save it
+# in tbl_graph objects
 
 
+# Now plot those objects using ggraph()
+
+
+# Using your ggplo2 skills, add the theme_graph() and also provide labels to
+# your plot
+
+
+
+# 2) Build a tbl_graph with real data --------------------------------------
+# The exercises are inspired by: https://ona-book.org/using-twitter.html>
+
+# Now, let's apply the theoretical knowledge to real data. Lets load data
+# from Canadian Members of Parliament Twitter's account
+
+mp_nodes <- read_csv("data-raw/mp_vertices.csv")
+mp_edges <- read_csv("data-raw/mp_edgelist.csv")
+
+
+# Please explain what are the nodes here. And what do you think the edges
+# might be.
+
+
+
+# Set the nodes and the edges in a tbl_graph object using a tidygraph function
+
+
+
+# Let's apply centrality measures (choose the compound or single measure)
+# remember that there's a hole family of functions inside tidygraph
+
+
+
+# Now, try at least 2 kinds of grouping
+
+
+
+# 3) Ploting everything! --------------------------------------------------
+
+
+# Plot now the clusters that you had in the last exercise
+
+
+
+
+
+
+# Plot, also, the nodes in order to show the impact of the meaures of
+# centrality.
+
+
+
+# Do you think those measures make sense? What insights do you have?
 
 
 
