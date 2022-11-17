@@ -1,29 +1,12 @@
-## Hertie School - Master of Data Science for Public Policy
-## Intro to Data Science Workshop 2022
-
-## Theme: Network analysis with {ggraph} and {tidygraph}
-## Instructors: Radwa Abdelsalam (github.com/Radwa-Radwan)
-##              Rodrigo Dornelles (github.com/rfdornelles)
-
-
-# Twitter example ---------------------------------------------------------
+#a
 library(tidygraph)
 library(ggraph)
 library(tidyverse)
 
-# Since we have a looooot of date, we'll subset only the most proeminent
-df_edges <- df_edges |>
-  head(1000)
-
-nodes_main <- nodes_main |>
-  dplyr::filter(username %in% c(unique(df_edges$from),
-                                unique(df_edges$to)))
-
-
 
 graph_tweets <- tbl_graph(nodes = nodes_main,
                           edges = df_edges,
-                          directed = FALSE)
+                          directed = F)
 
 
 graph_tweets <- graph_tweets %>%
@@ -35,25 +18,21 @@ graph_tweets <- graph_tweets %>%
   )
 
 network_act_df <- graph_tweets %>%
-  activate(nodes) %>%
-  select(-2:-4)  %>%
+  activate(nodes) %>% select(-2:-4)  %>%
   as_tibble()
 
-pop_username <- data.frame(
+pop_username <- as_tibble(
   network_act_df %>% arrange(-degree) %>% select(username),
   network_act_df %>% arrange(-between) %>% select(username),
   network_act_df %>% arrange(-closeness) %>% select(username),
   network_act_df %>% arrange(-eigen) %>% select(username)
-) %>% setNames(c("Degree","Betweenness","Closeness","Eigen")) |>
-  tibble::as_tibble()
+) %>% setNames(c("Degree","Betweenness","Closeness","Eigen"))
 
 pop_username
 
 
 set.seed(123)
-
-graph_tweets <- graph_tweets %>%
-  select(-2:-4) |>
+graph_tweets <- graph_tweets %>% select(-2:-4) |>
   activate(nodes) %>%
   mutate(community = group_louvain()) %>% # clustering
   activate(edges) %>%
@@ -88,15 +67,14 @@ important_person <-
   distinct(username) %>%
   pull(username)
 
-important_person
 
 set.seed(123)
 
-hertie_graph <- graph_tweets %>%
+graph_tweets %>%
   activate(nodes) %>%
   mutate(ids = row_number(),
          community = as.character(community)) %>%
-  filter(community %in% 1:3) %>% # number of community.
+  filter(community %in% 1:7) %>% # number of community.
   arrange(community,ids) %>%
   mutate(node_label = ifelse(username %in% important_person, username,NA)) %>%
   ggraph(layout = "fr") +
@@ -104,13 +82,12 @@ hertie_graph <- graph_tweets %>%
   geom_node_point(aes(size = degree, fill = community), shape = 21, alpha = 0.7, color = "grey30") +
   geom_node_label(aes(label = node_label), repel = T, alpha = 0.8 ) +
   guides(size = "none") +
-  labs(title = "Top Communities in the #HertieVerse",
+  labs(title = "Top 3 Community of #SecureTheTribe",
        color = "Interaction",
        fill = "Community") +
   theme_void() +
   theme(legend.position = "top")
 
-hertie_graph
 
 
 

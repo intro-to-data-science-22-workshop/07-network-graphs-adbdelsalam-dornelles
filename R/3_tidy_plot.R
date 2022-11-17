@@ -211,6 +211,6 @@ dolphin_graph |>
   ggraph() +
   geom_edge_link() +
   geom_node_point(aes(color = community), size = 5) +
-  #scale_color_viridis(discrete = TRUE) +
+  scale_color_viridis(discrete = TRUE) +
   theme_graph()
 
