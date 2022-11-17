@@ -6,6 +6,15 @@
 ##              Rodrigo Dornelles (github.com/rfdornelles)
 
 
-# Package instalation -----------------------------------------------------
+# {tidygraph} -------------------------------------------------------------
 
+# build the object
+
+# activate
+
+# analysis
+
+# {ggraph} ----------------------------------------------------------------
+
+#
 
