@@ -7,25 +7,24 @@ This repository provides materials for a session that is part of the [I2DS Tools
 
 ### Session contents
 
-This session will introduce you to the modern data wrangling workflow with R and dplyr. Data wrangling is one of the core steps in the data science workflow. dplyr is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges, including the manipulation of datasets and variables. 
+This session will introduce you to network analysis using {tidygraph} and {ggraph}. We'll show you the basic theory behind graph theory and, then, apply those concepts to the packages' main functions. In the end, we'll show you a real-life example, based on Hertie School's twitter account, showing how to apply those tools in concrete.
 
 ### Main learning objectives
 
-The goals of this session are to (1) equip you with conceptual knowledge about the dplyr package and data wrangling workflow, (2) show you the three key verbs of the pacakge, and (3) provide you with practice material as well as some further readings.
+The goals of this session are to (1) present you a general understanding about graph theory, (2) present the basic workflow of a network analysis, (3) show you how to integrate tidyverse, tidygraph and ggraph and (4) give you further reference.
 
 
 ## Instructors
 
-- Simon Munzert ([website](http://simonmunzert.github.io/), [twitter](https://twitter.com/simonsaysnothin))
-- Kermit the Frog ([website](https://en.wikipedia.org/wiki/Kermit_the_Frog), [twitter](https://twitter.com/KermitTheFrog))
-
+- Radwa Abdelsalam ([website](http://github.com/Radwa-Radwan/), [twitter](https://twitter.com/radwaash7))
+- Rodrigo Dornelles ([website](http://github.com/rfdornelles), [twitter](https://twitter.com/rfdornelles))
 
 ## Further resources
 
-- [dplyr overview at dplyr.tidyverse.org](https://dplyr.tidyverse.org/)
-- [Hands-on dplyr tutorial by Data School on YouTube](https://www.youtube.com/watch?v=jWjqLW-u3hc)
-- [R for Data Science book - part on data wrangling](https://r4ds.had.co.nz/wrangle-intro.html)
-
+- [Introducing tidygraph](https://www.data-imaginist.com/2017/introducing-tidygraph/)
+- [Social Network Analysis in R part 1: Ego Network](https://medium.com/analytics-vidhya/social-network-analysis-in-r-part-1-ego-network-ab6b0d23ebc8)
+- [LBB: Social Network Analysis](https://rpubs.com/TeraPutera/social_network_analysis)
+- [Network analysis in R](https://dgarcia-eu.github.io/SocialDataScience/5_SocialNetworkPhenomena/057_Tidygraph2/tidygraph2.html)
 
 ## License
 
@@ -33,6 +32,8 @@ The material in this repository is made available under the [MIT license](http:/
 
 ## Statement of contributions
 
-**Simon Munzert** prepared the practice material and post-processed the recording.
+Both instructors prepared together the material, the videos and the concepts behind the presentation.
 
-**Kermit the Frog** prepared the presentation slides and recording. He also provided an example to the practice material.
+**Radwa Abdelsalam** researched the mathematical concepts behind the package functions, the presentation examples and academic material.
+
+**Rodrigo Dornelles** worked on organizing the package coding and data wrangling for the application examples.
